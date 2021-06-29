@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Implement webpsupport for image field.
@@ -37,9 +36,9 @@ function imagewebp_field_formatter_settings_summary_alter(&$summary, $context) {
   // Append a message to the summary when image has
   // webpsupport set to TRUE for the current view mode.
   if ($context['instance']['display'][$context['view_mode']]['type'] == 'image') {
-
     $display = $context['instance']['display'][$context['view_mode']];
     $settings = $display['settings'];
+
     if (!empty($summary)) {
       $summary .= '<br />';
     }

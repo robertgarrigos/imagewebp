@@ -1,6 +1,6 @@
 name = ImageWebP
 description = Modern image format that provides superior lossless and lossy compression for images.
 dependencies[] = image
-dependencies[] = field_formatter_settings
 package = Webp
-core = "7.x"
+backdrop = 1.x
+type = module
