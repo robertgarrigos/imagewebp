@@ -1,5 +1,5 @@
 name = ImageWebP
-description = Modern image format that provides superior lossless and lossy compression for images.
+description = Modern image format that provides superior lossless and lossy compression for images.
 dependencies[] = image
 package = Webp
 backdrop = 1.x

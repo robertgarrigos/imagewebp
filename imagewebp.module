@@ -15,11 +15,12 @@ function imagewebp_init() {
  * Callback for generate webp image.
  */
 function imagewebp_create_webp($file) {
+  watchdog('imagewebp', 'imagewebp_create_webp', array());
   $uri = $file->uri;
   $url = file_create_url($uri);
   $pathinfo = pathinfo($url, PATHINFO_FILENAME);
   $file_path = realpath(filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . parse_url($url, PHP_URL_PATH));
-  $dirpath = dirname($file_path) . "\\" . $pathinfo . ".webp";
+  $dirpath = dirname($file_path) . '/' . $pathinfo . '.webp';
   $webp_url = imagewebp_create_from_any($url);
   $imagewebp = imagewebp($webp_url, $dirpath);
 
@@ -59,27 +60,53 @@ function imagewebp_create_from_any($filepath) {
   return $im;
 }
 
-/**
- * Implements hook_field_display_alter().
- */
-function imagewebp_field_display_alter(&$display, $context) {
-  if ((isset($_SERVER['HTTP_ACCEPT']) === TRUE) && (strstr($_SERVER['HTTP_ACCEPT'], 'image/webp') !== FALSE) && $display['type'] == 'image') {
-    $content = field_info_instances("node", $context['entity']->type);
-    $field_name = $context['instance']['field_name'];
+function imagewebp_node_view(Node $node, $view_mode, $langcode) {
+  if ((isset($_SERVER['HTTP_ACCEPT']) === TRUE) && (strstr($_SERVER['HTTP_ACCEPT'], 'image/webp') !== FALSE)) {
+    $fields = imagewebp_get_field_entity('node', $node->type);
+    foreach ($fields as $field) {
+      if (isset($node->{$field}['und'][0]['uri'])) {
+        $path = $node->{$field}['und'][0]['uri'];
+        $uri = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $path);
+        if (file_exists($uri)) {
+          $node->{$field}['und'][0]['uri'] = $uri;
 
-    foreach ($content as $key => $value) {
-      $support = $display['settings']['webp_support'];
-
-      if (!$support) {
-        $path = $context['entity']->{$key}['und'][0]['uri'];
-        $filename = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $path);
-
-        if (file_exists($filename)) {
-          $context['entity']->{$key}['und'][0]['uri'] = $filename;
+          $filename = $node->{$field}['und'][0]['filename'];
+          $filename = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $filename);
+          $node->{$field}['und'][0]['filename'] = $filename;
+          $node->{$field}['und'][0]['filemime'] = 'image/webp';
         }
       }
     }
   }
+}
+
+/**
+ * Implements hook_field_display_alter().
+ */
+function imagewebp_field_display_alter(&$display, $context) {
+/*
+  if ((isset($_SERVER['HTTP_ACCEPT']) === TRUE) && (strstr($_SERVER['HTTP_ACCEPT'], 'image/webp') !== FALSE) && $display['type'] == 'image') {
+    $content = field_info_instances("node", $context['entity']->type);
+    $field_name = $context['instance']['field_name'];
+
+    $support = $display['settings']['webp_support'];
+    foreach ($content as $field => $value) {
+      if ($support) {
+        if (isset($context['entity']->{$field}['und'][0]['uri'])) {
+          $path = $context['entity']->{$field}['und'][0]['uri'];
+          $uri = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $path);
+          if (file_exists($uri)) {
+            $context['entity']->{$field}['und'][0]['uri'] = $uri;
+
+            $filename = $context['entity']->{$field}['und'][0]['filename'];
+            $filename = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $filename);
+            $context['entity']->{$field}['und'][0]['filename'] = $filename;
+          }
+        }
+      }
+    }
+  }
+*/
 }
 
 /**
@@ -97,6 +124,15 @@ function imagewebp_preprocess_field(&$vars) {
     $formatter_settings = field_formatter_settings_get_instance_display_settings($entity_type, $field_name, $bundle, $view_mode);
     // Make the setting available in the field template.
     $vars['webp_support'] = $formatter_settings['webp_support'];
+    if ($vars['element']['#object']->{'field_image_webp'}['und'][0]['filemime'] == 'image/webp') {
+      $source = $vars['element']['#object']->{'field_image_webp'}['und'][0];
+      $keys = array('filename', 'uri', 'filemime');
+      foreach ($keys as $key) {
+        $vars['element']['#items'][0][$key] = $source[$key];
+        $vars['element']['0']['#item'][$key] = $source[$key];
+        $vars['items'][0]['#item'][$key] = $source[$key];
+      }
+    }
   }
 }
 
@@ -105,6 +141,38 @@ function imagewebp_preprocess_field(&$vars) {
  */
 function imagewebp_form_field_ui_display_overview_form_alter(&$form, &$form_state) {
   $form['actions']['submit']['#submit'][] = '_imagewebp_custom_submit';
+}
+
+/**
+ * Implements hook_form_ID_alter().
+ */
+function imagewebp_form_page_node_form_alter(&$form, &$form_state) {
+  $form['actions']['submit']['#submit'][] = '_imagewebp_node_submit';
+}
+
+/**
+ * Callback for hook_form_alter() submit.
+ */
+function _imagewebp_node_submit($form, &$form_state) {
+  $fields = imagewebp_get_field_entity($form['#entity_type'], $form['#bundle']);
+  $nodes = node_load_multiple(array(), array('type' => $form['#bundle']));
+  $test = array();
+
+  foreach ($fields as $key => $field) {
+    foreach ($nodes as $k => $node) {
+      $fid = $node->{$field}[LANGUAGE_NONE][0]['fid'];
+
+      if (isset($fid) && $fid != 0) {
+        $file = file_load($fid);
+        watchdog('imagewebp', '$file: ' . json_encode($file), array());
+
+        if ($file) {
+          $test[] = $fid;
+          $response = imagewebp_create_webp($file);
+        }
+      }
+    }
+  }
 }
 
 /**
