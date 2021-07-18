@@ -71,11 +71,13 @@ function imagewebp_field_display_alter(&$display, $context) {
       $support = $display['settings']['webp_support'];
 
       if (!$support) {
-        $path = $context['entity']->{$key}['und'][0]['uri'];
-        $filename = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $path);
+        if (isset($context['entity']->{$key}['und'][0]['uri'])) {
+          $path = $context['entity']->{$key}['und'][0]['uri'];
+          $filename = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $path);
 
-        if (file_exists($filename)) {
-          $context['entity']->{$key}['und'][0]['uri'] = $filename;
+          if (file_exists($filename)) {
+            $context['entity']->{$key}['und'][0]['uri'] = $filename;
+          }
         }
       }
     }
