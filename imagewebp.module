@@ -84,29 +84,28 @@ function imagewebp_node_view(Node $node, $view_mode, $langcode) {
  * Implements hook_field_display_alter().
  */
 function imagewebp_field_display_alter(&$display, $context) {
-/*
+  /*
   if ((isset($_SERVER['HTTP_ACCEPT']) === TRUE) && (strstr($_SERVER['HTTP_ACCEPT'], 'image/webp') !== FALSE) && $display['type'] == 'image') {
     $content = field_info_instances("node", $context['entity']->type);
     $field_name = $context['instance']['field_name'];
-
     $support = $display['settings']['webp_support'];
-    foreach ($content as $field => $value) {
+    foreach ($content as $field => $field_info) {
       if ($support) {
         if (isset($context['entity']->{$field}['und'][0]['uri'])) {
           $path = $context['entity']->{$field}['und'][0]['uri'];
           $uri = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $path);
           if (file_exists($uri)) {
             $context['entity']->{$field}['und'][0]['uri'] = $uri;
-
             $filename = $context['entity']->{$field}['und'][0]['filename'];
             $filename = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $filename);
             $context['entity']->{$field}['und'][0]['filename'] = $filename;
+            $context['entity']->{$field}['und'][0]['filemime'] = 'image/webp';
           }
         }
       }
     }
   }
-*/
+  */
 }
 
 /**
@@ -145,6 +144,7 @@ function imagewebp_form_field_ui_display_overview_form_alter(&$form, &$form_stat
 
 /**
  * Implements hook_form_ID_alter().
+ * page_node_form
  */
 function imagewebp_form_page_node_form_alter(&$form, &$form_state) {
   $form['actions']['submit']['#submit'][] = '_imagewebp_node_submit';
@@ -164,8 +164,6 @@ function _imagewebp_node_submit($form, &$form_state) {
 
       if (isset($fid) && $fid != 0) {
         $file = file_load($fid);
-        watchdog('imagewebp', '$file: ' . json_encode($file), array());
-
         if ($file) {
           $test[] = $fid;
           $response = imagewebp_create_webp($file);
