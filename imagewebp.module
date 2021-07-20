@@ -167,7 +167,6 @@ function _imagewebp_node_submit($form, &$form_state) {
 
       if (isset($fid) && $fid != 0) {
         $file = file_load($fid);
-
         if ($file) {
           $test[] = $fid;
           $response = imagewebp_create_webp($file);
