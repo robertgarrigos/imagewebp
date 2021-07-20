@@ -1,0 +1,38 @@
+<?php
+/**
+ * Install, Uninstall, Update, and Requirements hooks for ImageWebP.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function imagewebp_requirements($phase) {
+  $requirements = array();
+
+  // Ensure translations don't break at install time
+  $t = get_t();
+
+  if ($phase == 'runtime') {
+    $requirements['webp'] = array(
+      'title' => $t('WebP Support'),
+    );
+
+    // Get information about the native GD image library in PHP.
+    $gd_info = array();
+    if (function_exists(gd_info())) {
+      $gd_info = gd_info();
+    }
+
+    if (_imagewebp_webp_server_support()) {
+      $requirements['webp']['value'] = $t('Enabled: WepP Images are supported on this server.');
+      $requirements['webp']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+      $requirements['webp']['value'] = $t('Disabled: WepP Images are NOT supported on this server.');
+      $requirements['webp']['severity'] = REQUIREMENT_ERROR;
+      $requirements['webp']['description'] = $t('Your server is not capable of creating WebP image derivatives. PHP may need to be <a href="https://www.php.net/manual/en/image.installation.php">recompiled</a> using <code>--with-webp-dir</code> or <code>--with-webp</code>.');
+    }
+  }
+
+  return $requirements;
+}
