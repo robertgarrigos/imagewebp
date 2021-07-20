@@ -15,7 +15,6 @@ function imagewebp_init() {
  * Callback for generate webp image.
  */
 function imagewebp_create_webp($file) {
-  watchdog('imagewebp', 'imagewebp_create_webp', array());
   $uri = $file->uri;
   $url = file_create_url($uri);
   $pathinfo = pathinfo($url, PATHINFO_FILENAME);
@@ -67,6 +66,10 @@ function imagewebp_node_view(Node $node, $view_mode, $langcode) {
       if (isset($node->{$field}['und'][0]['uri'])) {
         $path = $node->{$field}['und'][0]['uri'];
         $uri = preg_replace('"\.(bmp|gif|png|jpg)$"', '.webp', $path);
+        if (!file_exists($uri)) {
+          $file = (object) $node->{$field}['und'][0];
+          imagewebp_create_webp($file);
+        }
         if (file_exists($uri)) {
           $node->{$field}['und'][0]['uri'] = $uri;
 
