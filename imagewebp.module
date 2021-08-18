@@ -60,7 +60,7 @@ function imagewebp_create_from_any($filepath) {
 }
 
 function imagewebp_node_view(Node $node, $view_mode, $langcode) {
-  if ((isset($_SERVER['HTTP_ACCEPT']) === TRUE) && (strstr($_SERVER['HTTP_ACCEPT'], 'image/webp') !== FALSE)) {
+  if (_imagewebp_webp_browser_support()) {
     $fields = imagewebp_get_field_entity('node', $node->type);
     foreach ($fields as $field) {
       if (isset($node->{$field}['und'][0]['uri'])) {
@@ -88,7 +88,7 @@ function imagewebp_node_view(Node $node, $view_mode, $langcode) {
  */
 function imagewebp_field_display_alter(&$display, $context) {
   /*
-  if ((isset($_SERVER['HTTP_ACCEPT']) === TRUE) && (strstr($_SERVER['HTTP_ACCEPT'], 'image/webp') !== FALSE) && $display['type'] == 'image') {
+    if (_imagewebp_webp_browser_support() && $display['type'] == 'image') {
     $content = field_info_instances("node", $context['entity']->type);
     $field_name = $context['instance']['field_name'];
     $support = $display['settings']['webp_support'];
@@ -174,6 +174,40 @@ function _imagewebp_node_submit($form, &$form_state) {
       }
     }
   }
+}
+
+/**
+ * Helper function to determine if WebP Support is active on this browser.
+ *
+ * @return bool
+ *   TRUE if supported, FALSE if not.
+ */
+function _imagewebp_webp_browser_support() {
+  if ((isset($_SERVER['HTTP_ACCEPT']) === TRUE) && (strstr($_SERVER['HTTP_ACCEPT'], 'image/webp') !== FALSE)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function to determine if this server has WebP Support.
+ *
+ * @return bool
+ *   TRUE if supported, FALSE if not.
+ */
+function _imagewebp_webp_server_support() {
+  // Get information about the native GD image library in PHP.
+  $gd_info = array();
+  if (function_exists(gd_info())) {
+    $gd_info = gd_info();
+  }
+
+  // Check GD info and if the necessary function exists.
+  if (isset($gd_info['WebP Support']) && $gd_info['WebP Support'] && function_exists('imagewebp')) {
+    return TRUE;
+  }
+
+  return FALSE;
 }
 
 /**
