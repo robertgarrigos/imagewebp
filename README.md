@@ -42,6 +42,7 @@ https://github.com/backdrop-contrib/foo-project/issues.
 Current Maintainers
 - [Király Péter](https://github.com/pkiraly).
 - [Justin Christoffersen](https://github.com/larsdesigns).
+- [Jen Lampton](https://github.com/jenlampton).
 
 Credits
 -------
