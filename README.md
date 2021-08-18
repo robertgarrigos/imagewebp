@@ -47,6 +47,7 @@ Credits
 -------
 
 - Ported to Backdrop CMS by [Király Péter](https://github.com/pkiraly) and [Justin Christoffersen](https://github.com/larsdesigns).
+- Backdrop port sponsored by [Jeneration Web Development](https://www.jenerationweb.com/).
 - Originally written for Drupal by [Yogesh Nipane](https://www.drupal.org/u/nipany).
 
 License
