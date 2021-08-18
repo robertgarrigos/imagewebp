@@ -15,17 +15,15 @@ Requirements
 
 This module requires that the following modules are also enabled:
 
- * [Image](https://docs.backdropcms.org/api/backdrop/core%21modules%21image%21image.module/1)
+ * Image module. Included with Backdrop core.
 
 Installation
 ------------
 
-- Install this module using the official Backdrop CMS instructions at
-  https://backdropcms.org/guide/modules.
+- Install this module using the official Backdrop CMS instructions at https://backdropcms.org/guide/modules.
 
-- Visit the configuration page under: Administration > Structure > Content types
-  > Page > Manage displays (admin/structure/types/manage/page/display/default)
-  and select the webp support checkbox.
+- Visit the configuration page under: Administration > Structure > Content types > Page > Manage displays (admin/structure/types/manage/page/display/default)
+and select the webp support checkbox.
 
 Documentation
 -------------
@@ -40,6 +38,8 @@ Bugs and Feature requests should be reported in the Issue Queue:
 https://github.com/backdrop-contrib/foo-project/issues.
 
 Current Maintainers
+-------------------
+
 - [Király Péter](https://github.com/pkiraly).
 - [Justin Christoffersen](https://github.com/larsdesigns).
 - [Jen Lampton](https://github.com/jenlampton).
