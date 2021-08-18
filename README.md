@@ -6,9 +6,9 @@ compression for images on the web. WebP create smaller, richer images that make
 the web faster.
 
 Provided a configurable feature to enable WebP conversion for any image.
-As all browsers are currently not supporting Webp format image, a care has been
-taken so that the browser that won’t support will render the original image
-uploaded (JPEG/PNG/GIF).
+As all browsers are currently not supporting Webp format image, care has been
+taken so that the browsers that do not support it will render the original image
+uploaded as (JPEG/PNG/GIF).
 
 Requirements
 ------------
@@ -23,16 +23,15 @@ Installation
 - Install this module using the official Backdrop CMS instructions at
   https://backdropcms.org/guide/modules.
 
-- Visit the configuration page under Administration > Configuration > Category >
-  Foo (admin/config/category/foo) and enter the required information.
-
-- Any additional steps.
+- Visit the configuration page under: Administration > Structure > Content types
+  > Page > Manage displays (admin/structure/types/manage/page/display/default)
+  and select the webp support checkbox.
 
 Documentation
 -------------
 
 Additional documentation is located in the Wiki:
-https://github.com/backdrop-contrib/foo-project/wiki/Documentation.
+https://github.com/backdrop-contrib/imagewebp/issues
 
 Issues
 ------
@@ -41,19 +40,14 @@ Bugs and Feature requests should be reported in the Issue Queue:
 https://github.com/backdrop-contrib/foo-project/issues.
 
 Current Maintainers
--------------------
-
-- [Chris Brown](https://github.com/username).
-- [Pat Smith](https://github.com/username).
-- Seeking additional maintainers.
+- [Király Péter](https://github.com/pkiraly).
+- [Justin Christoffersen](https://github.com/larsdesigns).
 
 Credits
 -------
 
-- Ported to Backdrop CMS by [Alex Baker](https://github.com/username).
-- Originally written for Drupal by [Taylor Young](https://github.com/username).
-- Based on the [MagicalCode project](https://github.com/example).
-- Sponsored by [TechNoCorp](https://example.com)
+- Ported to Backdrop CMS by [Király Péter](https://github.com/pkiraly) and [Justin Christoffersen](https://github.com/larsdesigns).
+- Backdrop port sponsored by [Ivar Jacobson International](https://www.ivarjacobson.com).
 
 License
 -------
