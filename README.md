@@ -20,10 +20,13 @@ This module requires that the following modules are also enabled:
 Installation
 ------------
 
-- Install this module using the official Backdrop CMS instructions at https://backdropcms.org/guide/modules.
+- Install this module using the official Backdrop CMS instructions at
+  https://backdropcms.org/guide/modules.
 
-- Visit the configuration page under: Administration > Structure > Content types > Page > Manage displays (admin/structure/types/manage/page/display/default)
-and select the webp support checkbox.
+- Visit the configuration page under: Administration > Structure > Content
+  types > Page > Manage displays
+  (admin/structure/types/manage/page/display/default) and select the webp
+  support checkbox.
 
 Documentation
 -------------
@@ -47,9 +50,12 @@ Current Maintainers
 Credits
 -------
 
-- Ported to Backdrop CMS by [Király Péter](https://github.com/pkiraly) and [Justin Christoffersen](https://github.com/larsdesigns).
-- Backdrop port sponsored by [Jeneration Web Development](https://www.jenerationweb.com/).
-- Originally written for Drupal by [Yogesh Nipane](https://www.drupal.org/u/nipany).
+- Ported to Backdrop CMS by [Király Péter](https://github.com/pkiraly) and
+  [Justin Christoffersen](https://github.com/larsdesigns).
+- Backdrop port sponsored by
+  [Jeneration Web Development](https://www.jenerationweb.com/).
+- Originally written for Drupal by
+  [Yogesh Nipane](https://www.drupal.org/u/nipany).
 
 License
 -------
