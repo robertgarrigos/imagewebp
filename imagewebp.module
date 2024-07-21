@@ -50,6 +50,9 @@ function imagewebp_create_from_any($filepath) {
 
     case 3:
       $im = imagecreatefrompng($filepath);
+      imagepalettetotruecolor($im);
+      imagealphablending($im, true);
+      imagesavealpha($im, true);
       break;
 
     case 6:
