@@ -46,6 +46,7 @@ Current Maintainers
 - [Király Péter](https://github.com/pkiraly).
 - [Justin Christoffersen](https://github.com/larsdesigns).
 - [Jen Lampton](https://github.com/jenlampton).
+- [Robert Garrigos](https://github.com/robertgarrigos)
 
 Credits
 -------
